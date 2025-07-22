@@ -3,7 +3,7 @@
 <head>
   <title>Aaron 2FA Code</title>
   <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib.umd.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -27,8 +27,8 @@
   <div class="timer" id="timer">Refreshing in: 30s</div>
 
   <script>
-    (function () {
-      const { authenticator } = window.otplib;
+    window.addEventListener('DOMContentLoaded', () => {
+      const authenticator = window.otplib.authenticator;
       const secret = 'TSLKVDYN2R4GEU2B';
 
       function updateCode() {
@@ -36,7 +36,8 @@
           const code = authenticator.generate(secret);
           document.getElementById('code').textContent = code;
         } catch (err) {
-          document.getElementById('code').textContent = 'Error generating code';
+          console.error('Error generating code:', err);
+          document.getElementById('code').textContent = 'Error';
         }
       }
 
@@ -50,10 +51,9 @@
         document.getElementById('timer').textContent = `Refreshing in: ${countdown}s`;
       }
 
-      // Initial display
       updateCode();
       setInterval(updateTimer, 1000);
-    })();
+    });
   </script>
 </body>
 </html>
