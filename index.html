@@ -1,0 +1,54 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aaron 2FA Code</title>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/otplib@12.0.1/otplib.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 100px;
+    }
+    .code {
+      font-size: 60px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .timer {
+      font-size: 20px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>Current 2FA Code</h1>
+  <div class="code" id="code">Loading...</div>
+  <div class="timer" id="timer">Refreshing in: 30s</div>
+
+  <script>
+    const secret = 'TSLKVDYN2R4GEU2B';
+
+    function updateCode() {
+      const code = otplib.authenticator.generate(secret);
+      document.getElementById('code').textContent = code;
+    }
+
+    let countdown = 30;
+    function updateTimer() {
+      countdown--;
+      if (countdown <= 0) {
+        updateCode();
+        countdown = 30;
+      }
+      document.getElementById('timer').textContent = `Refreshing in: ${countdown}s`;
+    }
+
+    // Initial display
+    updateCode();
+    setInterval(updateTimer, 1000);
+  </script>
+</body>
+</html>
+```
